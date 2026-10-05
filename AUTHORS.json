@@ -1,0 +1,15 @@
+{
+  "authors": [
+    {
+      "name": "Selorm Buaka",
+      "family": "Buaka",
+      "given": "Selorm",
+      "orcid": "0009-0005-3991-4859",
+      "email": "othnielbuaka@gmail.com",
+      "affiliation": "PhD Student, Applied Statistics and Research Methods, University of Northern Colorado, Greeley, Colorado, USA",
+      "roles": ["Conceptualization", "Methodology", "Software", "Validation", "Data curation", "Writing - original draft"],
+      "corresponding": true
+    }
+  ],
+  "collaborators": []
+}
