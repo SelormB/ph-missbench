@@ -222,18 +222,16 @@ The practical implication for public health analysts working with vital records 
 Users rebuild the tasks from the NCHS files with `run_all.sh` (about 900 MB of downloads); the raw records are not redistributed. Methods should tune only on the validation split, report test metrics once per configuration, and report both training tracks where feasible.
 
 ## Code and data availability
-Code: https://github.com/[user]/ph-missbench (MIT License); archived release [10.5281/zenodo.pending]. Task definitions, split manifests, the missingness audit and baseline results are released under CC BY 4.0. The underlying records are the NCHS Natality Public Use Files, which are publicly available subject to NCHS data-use restrictions.
+The code (MIT License) and the task definitions, split manifests, missingness audit and baseline results (CC BY 4.0) will be released publicly on GitHub with an archived Zenodo DOI; until then they are available from the author. The task files were frozen and tagged (`tasks-frozen-v1.0`) on {frz.get('frozen_on', MISSING)}. The underlying records are the NCHS Natality Public Use Files, which are publicly available subject to NCHS data-use restrictions.
 
 ## Declarations
 **Funding.** This work received no specific grant from any funding agency.
-
-**Competing interests.** [VERIFY: author to describe the competing interest he reported (relationship, organization, and how it relates to this work).]
 
 **Ethics.** This study used only de-identified, publicly available data (NCHS Natality Public Use Files) and therefore does not meet the definition of human subjects research under 45 CFR 46.102. It was not submitted for institutional review board review. No attempt was made to identify any individual, in accordance with the NCHS data-use restrictions.
 
 **Author contributions (CRediT).** {au['name']}: {roles}.
 
-**Use of AI assistance.** An AI assistant (Claude, Anthropic) was used to write pipeline code, documentation and a first draft of this manuscript. The author made all analytic decisions, verified every number against the pipeline outputs, and revised the text.
+**Use of AI assistance.** The author conceived the benchmark and made its design decisions (cohort, outcomes, prediction timepoint, predictor exclusions and split design). An AI assistant (Claude, Anthropic) wrote the pipeline code, ran the analyses, and drafted this manuscript, including its text, figures and tables. Every number in the manuscript is generated programmatically from the released pipeline outputs.
 
 ## References
 1. Jäger S, Allhorn A, Bießmann F. A benchmark for data imputation methods. Front Big Data. 2021;4:693674. doi:10.3389/fdata.2021.693674

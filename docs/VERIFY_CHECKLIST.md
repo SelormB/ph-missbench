@@ -24,7 +24,7 @@ Initial and date each line in your own copy. The publish gate checks the mechani
 
 ## Manuscript (added 2026-10-10)
 - [ ] Introduction and discussion rewritten in your own voice (the draft text was written by an AI assistant)
-- [ ] Competing-interest statement written (you reported one)
+- [ ] Competing-interest statement: omitted from the arXiv preprint (not required there); journals will require it, and you reported one
 - [ ] Ethics statement confirmed against UNC policy (current text: not human subjects research, no IRB submission)
 - [ ] References: 13 checked against sources on 2026-10-10; re-check any you add
 

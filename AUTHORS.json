@@ -7,7 +7,11 @@
       "orcid": "0009-0005-3991-4859",
       "email": "othnielbuaka@gmail.com",
       "affiliation": "PhD Student, Applied Statistics and Research Methods, University of Northern Colorado, Greeley, Colorado, USA",
-      "roles": ["Conceptualization", "Methodology", "Software", "Validation", "Data curation", "Writing - original draft"],
+      "roles": [
+        "Conceptualization",
+        "Methodology",
+        "Project administration"
+      ],
       "corresponding": true
     }
   ],
