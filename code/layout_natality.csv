@@ -1,0 +1,56 @@
+name,start,end,role,kind,valid,not_stated,not_applicable,imp_flag,label
+DOB_YY,9,12,admin,int,2022-2024,,,,Birth year
+MAGE_IMPFLG,73,73,flag,flag,1,,,,Mother's age imputed (1)
+MAGER,75,76,predictor,int,12-50,BLANK,,MAGE_IMPFLG,Mother's age (years)
+MBSTATE_REC,84,84,predictor,cat,1|2,3,,,Mother's nativity (1 US-born; 2 foreign-born)
+RESTATUS,104,104,cohort,cat,1|2|3|4,,,,Residence status (4 = foreign resident)
+MRACE6,107,107,predictor,cat,1|2|3|4|5|6,BLANK,,MRACEIMP,Mother's race (6 categories)
+MRACEIMP,111,111,flag,flag,1|2,,,,Mother's race imputed (1 or 2)
+MHISP_R,115,115,predictor,cat,0|1|2|3|4|5,9,,,Mother's Hispanic origin recode
+DMAR,120,120,predictor,cat,1|2,9|BLANK,,MAR_IMP,Marital status (1 married; 2 unmarried)
+MAR_IMP,121,121,flag,flag,1,,,,Marital status imputed (1)
+MEDUC,124,124,predictor,cat,1|2|3|4|5|6|7|8,9,,,Mother's education
+FAGECOMB,147,148,predictor,int,9-98,99,,,Father's age (years)
+FEDUC,163,163,predictor,cat,1|2|3|4|5|6|7|8,9,,,Father's education
+PRIORLIVE,171,172,predictor,int,0-30,99,,,Prior births now living
+PRIORDEAD,173,174,predictor,int,0-30,99,,,Prior births now dead
+PRIORTERM,175,176,predictor,int,0-30,99,,,Prior other pregnancy outcomes
+ILLB_R,198,200,predictor,int,0-300,999,888,,Months since last live birth (888 = first birth)
+ILOP_R,206,208,predictor,int,0-300,999,888,,Months since last other pregnancy outcome
+ILP_R,214,216,predictor,int,0-300,999,888,,Months since last pregnancy
+PRECARE,224,225,predictor,int,0-10,99,,,Month prenatal care began (0 = none)
+PREVIS,238,239,excluded,int,0-98,99,,,Prenatal visits (counted through delivery: leakage)
+WIC,251,251,predictor,yn,Y|N,U,,,WIC during pregnancy
+CIG_0,253,254,predictor,int,0-98,99,,,Cigarettes/day 3 months before pregnancy
+CIG_1,255,256,predictor,int,0-98,99,,,Cigarettes/day 1st trimester
+CIG_2,257,258,pending,int,0-98,99,,,Cigarettes/day 2nd trimester [V2]
+CIG_3,259,260,pending,int,0-98,99,,,Cigarettes/day 3rd trimester [V2]
+M_HT_IN,280,281,predictor,int,30-78,99,,,Mother's height (inches)
+BMI,283,286,predictor,num,13.0-69.9,99.9,,,Pre-pregnancy BMI
+PWGT_R,292,294,predictor,int,75-375,999,,,Pre-pregnancy weight (lb)
+RF_PDIAB,313,313,predictor,yn,Y|N,U,,,Pre-pregnancy diabetes
+RF_GDIAB,314,314,pending,yn,Y|N,U,,,Gestational diabetes [V2]
+RF_PHYPE,315,315,predictor,yn,Y|N,U,,,Pre-pregnancy hypertension
+RF_GHYPE,316,316,pending,yn,Y|N,U,,,Gestational hypertension [V2]
+RF_EHYPE,317,317,pending,yn,Y|N,U,,,Hypertension eclampsia [V2]
+RF_PPTERM,318,318,predictor,yn,Y|N,U,,,Previous preterm birth
+RF_INFTR,325,325,predictor,yn,Y|N,U,,,Infertility treatment used
+RF_FEDRG,326,326,predictor,yn,Y|N,U,X,,Fertility-enhancing drugs (X = no infertility treatment)
+RF_ARTEC,327,327,predictor,yn,Y|N,U,X,,Assisted reproductive technology (X = no infertility treatment)
+RF_CESAR,331,331,predictor,yn,Y|N,U,,,Previous cesarean
+RF_CESARN,332,333,predictor,int,0-30,99,,,Number of previous cesareans
+IP_GON,343,343,predictor,yn,Y|N,U,,,Gonorrhea
+IP_SYPH,344,344,predictor,yn,Y|N,U,,,Syphilis
+IP_CHLAM,345,345,predictor,yn,Y|N,U,,,Chlamydia
+IP_HEPB,346,346,predictor,yn,Y|N,U,,,Hepatitis B
+IP_HEPC,347,347,predictor,yn,Y|N,U,,,Hepatitis C
+PAY_REC,436,436,predictor,cat,1|2|3|4,9,,,Payment source recode
+DPLURAL,454,454,cohort,cat,1|2|3|4,BLANK,,IMP_PLUR,Plurality
+IMP_PLUR,456,456,flag,flag,1,,,,Plurality imputed (1)
+SEX,475,475,excluded,cat,M|F,BLANK,,IMP_SEX,Infant sex (postnatal item)
+IMP_SEX,476,476,flag,flag,1,,,,Infant sex imputed (1)
+COMPGST_IMP,488,488,flag,flag,1,,,,Combined gestation imputed (1)
+OBGEST_FLG,489,489,flag,flag,1,,,,Obstetric estimate used in combined gestation (1)
+COMBGEST,490,491,info,int,17-47,99,,COMPGST_IMP,Combined gestation (LMP-based) weeks
+OEGEST_COMB,499,500,outcome,int,17-47,99,,,Obstetric estimate of gestation (weeks)
+DBWT,504,507,outcome,int,227-8165,9999,,,Birthweight (grams)

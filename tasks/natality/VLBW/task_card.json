@@ -1,0 +1,96 @@
+{
+  "task": "VLBW",
+  "version": "1.0.0-draft",
+  "label": "Very low birthweight (<1,500 g)",
+  "source": "NCHS Natality Public Use Files",
+  "years": {
+    "train": [
+      2022,
+      2023
+    ],
+    "test": 2024
+  },
+  "cohort": [
+    "U.S. residents",
+    "plurality reported (not imputed)",
+    "singletons",
+    "DBWT stated"
+  ],
+  "outcome_field": "DBWT",
+  "predictors": [
+    "MAGER",
+    "MBSTATE_REC",
+    "MRACE6",
+    "MHISP_R",
+    "DMAR",
+    "MEDUC",
+    "FAGECOMB",
+    "FEDUC",
+    "PRIORLIVE",
+    "PRIORDEAD",
+    "PRIORTERM",
+    "ILLB_R",
+    "ILOP_R",
+    "ILP_R",
+    "PRECARE",
+    "WIC",
+    "CIG_0",
+    "CIG_1",
+    "M_HT_IN",
+    "BMI",
+    "PWGT_R",
+    "RF_PDIAB",
+    "RF_PHYPE",
+    "RF_PPTERM",
+    "RF_INFTR",
+    "RF_FEDRG",
+    "RF_ARTEC",
+    "RF_CESAR",
+    "RF_CESARN",
+    "IP_GON",
+    "IP_SYPH",
+    "IP_CHLAM",
+    "IP_HEPB",
+    "IP_HEPC",
+    "PAY_REC"
+  ],
+  "missingness_classes": {
+    "O": "observed",
+    "S": "not stated",
+    "A": "not applicable (structural)",
+    "I": "imputed by NCHS, restored to missing",
+    "X": "undocumented code, treated as missing"
+  },
+  "primary_metric": "AUPRC on test",
+  "secondary_metrics": [
+    "AUROC",
+    "Brier score",
+    "calibration slope",
+    "calibration intercept"
+  ],
+  "seed": 20261004,
+  "valid_fraction": 0.1,
+  "standard_train_n": 250000,
+  "splits": {
+    "train": {
+      "n": 6324167,
+      "cases": 68280,
+      "prevalence": 0.010796678835331199
+    },
+    "valid": {
+      "n": 703598,
+      "cases": 7629,
+      "prevalence": 0.010842839234904022
+    },
+    "test": {
+      "n": 3512859,
+      "cases": 37336,
+      "prevalence": 0.010628379903662515
+    },
+    "train_standard": {
+      "n": 250000,
+      "cases": 2717,
+      "prevalence": 0.010868
+    }
+  }
+}

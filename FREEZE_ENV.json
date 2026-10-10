@@ -1,0 +1,10 @@
+{
+  "note": "Software used to build and freeze the v1.0 natality tasks (2026-10-10). Parquet bytes, and so FREEZE.json hashes, can differ under other pyarrow/pandas versions; the split manifest is the binding definition.",
+  "python": "3.13.16",
+  "pandas": "3.0.5",
+  "pyarrow": "25.0.1",
+  "numpy": "2.5.3",
+  "scikit-learn": "1.9.1",
+  "lightgbm": "4.7.0",
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39"
+}

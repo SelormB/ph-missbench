@@ -1,0 +1,20 @@
+{
+  "frozen_on": "2026-10-10",
+  "note": "Written before any author-developed method was evaluated.",
+  "sha256": {
+    "tasks/natality/EPTB/test.parquet": "5c216376f2c3dc6c555ecc442e74adafe91ef2e1b81b4e3fe55f2c0ccd5f8aa5",
+    "tasks/natality/EPTB/test_mclass.parquet": "6554e0509b9f7a74594960ec9800697dc77d4ad4cacba38e2a2768183272ec06",
+    "tasks/natality/EPTB/train.parquet": "77a9e5c7678d1faf7ccec7be5be385fa3481e4f7b2a776ff161c6e64cf8ff5d7",
+    "tasks/natality/EPTB/train_mclass.parquet": "6bbe7f485679dad738ee5ad29d72339c798234511ab10604d77e0bad776963ae",
+    "tasks/natality/EPTB/valid.parquet": "d52b38c9fd4c69f05155319a49cb22de1ab1e7dafa26e0b26fed45a0f54a72f3",
+    "tasks/natality/EPTB/valid_mclass.parquet": "7571ca6ab48cff5de61e1a5298a5a7f90d735b7f094a1c5c357dd1242ad9c84d",
+    "tasks/natality/VLBW/test.parquet": "2ba51dee95116c6bf363912ed6b5e80d29155c7c92fcf6468f5a7a335cbbdbc0",
+    "tasks/natality/VLBW/test_mclass.parquet": "0650860162a8bc10b0ab4a04c281b1ad75cbb184f6b95410e9f43e202409bc77",
+    "tasks/natality/VLBW/train.parquet": "6ecc55a095837ad2a68ba93fd176ef07711e29b7b1af146a1ba7d3e21c961c10",
+    "tasks/natality/VLBW/train_mclass.parquet": "189812da023b84448c3dd1eb71cfe8c5861ad74fc30bbe90b19b89256f0f9652",
+    "tasks/natality/VLBW/valid.parquet": "46b7f5b789b724343fe92433741bc7a8e1166221ae9c5c951de2343fde81eefd",
+    "tasks/natality/VLBW/valid_mclass.parquet": "3fa957e6595382f4840b97ec5b2bf07c7a63953851b040b2daeb145735ff9a04",
+    "tasks/natality/split_manifest.csv.gz": "05bbaeb9dcf31a14e7dbbb8b778c9afebcaff09357416338dab11fadd8a31b43",
+    "code/layout_natality.csv": "a612eed3351938ff0106f81a5a02147f5c31b0c2a76e1018ffc9dcedfe68ce32"
+  }
+}

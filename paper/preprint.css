@@ -1,0 +1,17 @@
+body { font-family: "DejaVu Serif", Georgia, serif; font-size: 10.5pt; line-height: 1.45; max-width: 7in; margin: 0 auto; color: #111; }
+h1 { font-size: 17pt; line-height: 1.25; margin-top: 0.2in; }
+h2 { font-size: 13pt; margin-top: 0.25in; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
+h3 { font-size: 11pt; margin-top: 0.18in; }
+table { border-collapse: collapse; margin: 8px 0; font-size: 9pt; }
+th, td { padding: 3px 8px; border-bottom: 1px solid #ddd; white-space: nowrap; text-align: left; }
+th { border-bottom: 1.5px solid #555; }
+blockquote { border-left: 4px solid #c00; margin: 0 0 10px 0; padding: 4px 10px; color: #a00; background: #fff4f4; }
+code { font-size: 9pt; }
+
+img { max-width: 100%; display: block; margin: 6px auto; }
+figure { margin: 12px 0; page-break-inside: avoid; }
+figcaption { font-size: 9pt; color: #333; margin-top: 4px; }
+table { page-break-inside: avoid; }
+h2 { page-break-after: avoid; }
+.keep { page-break-inside: avoid; }
+.appendix { page-break-before: always; }

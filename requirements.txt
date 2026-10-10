@@ -1,0 +1,6 @@
+# Versions used for the frozen v1.0 natality build (see FREEZE_ENV.json)
+pandas==3.0.5
+pyarrow==25.0.1
+numpy==2.5.3
+scikit-learn==1.9.1
+lightgbm==4.7.0

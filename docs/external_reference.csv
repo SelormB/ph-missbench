@@ -1,0 +1,6 @@
+year,measure,value,source
+2022,births,3667758,"NVSR 75(2), Births: Final Data for 2024, Table 1. https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-02.pdf"
+2023,births,3596017,"NVSR 75(2), Births: Final Data for 2024, Table 1. https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-02.pdf"
+2024,births,3628934,"NVSR 75(2), Births: Final Data for 2024. https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-02.pdf"
+2024,eptb_pct,2.72,"NVSR 75(2), Births: Final Data for 2024 (early preterm, <34 weeks). https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-02.pdf"
+2024,vlbw_pct,1.33,"NVSR 75(2), Births: Final Data for 2024 (very low birthweight). https://www.cdc.gov/nchs/data/nvsr/nvsr75/nvsr75-02.pdf"

@@ -1,0 +1,7 @@
+data/raw/*.zip
+data/raw/*.part
+data/processed/*.parquet
+tasks/**/*.parquet
+__pycache__/
+.env
+*.token

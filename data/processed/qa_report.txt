@@ -1,0 +1,30 @@
+PH-MissBench natality QA report (DRAFT)
+
+Layout check: 165/165 field-years pass (max invalid share 0.0000%)
+Cells with undocumented codes (class X, treated as missing; author to review): 4 field-populations
+   2024 all ILLB_R: 1 of 3,638,436
+   2024 all ILP_R: 1 of 3,638,436
+   2024 cohort ILLB_R: 1 of 3,515,553
+   2024 cohort ILP_R: 1 of 3,515,553
+Fields over the 0.01% undocumented-code limit: 0
+
+2022 cohort flow: all records 3,676,029 -> U.S. residents 3,667,758 -> plurality reported (not imputed) 3,667,586 -> singletons 3,550,208
+   EPTB: {'outcome_not_stated': 2579, 'eligible': 3547629, 'cases': 76705, 'prevalence': 0.021621482967920266}
+   VLBW: {'outcome_not_stated': 2661, 'eligible': 3547547, 'cases': 38376, 'prevalence': 0.010817615665134245}
+2023 cohort flow: all records 3,605,081 -> U.S. residents 3,596,017 -> plurality reported (not imputed) 3,595,878 -> singletons 3,482,832
+   EPTB: {'outcome_not_stated': 2544, 'eligible': 3480288, 'cases': 75408, 'prevalence': 0.021667172371941632}
+   VLBW: {'outcome_not_stated': 2614, 'eligible': 3480218, 'cases': 37533, 'prevalence': 0.0107846692362375}
+2024 cohort flow: all records 3,638,436 -> U.S. residents 3,628,934 -> plurality reported (not imputed) 3,627,336 -> singletons 3,515,553
+   EPTB: {'outcome_not_stated': 3289, 'eligible': 3512264, 'cases': 75567, 'prevalence': 0.02151518223003738}
+   VLBW: {'outcome_not_stated': 2694, 'eligible': 3512859, 'cases': 37336, 'prevalence': 0.010628379903662515}
+
+Sanity thresholds:
+   [PASS] 2022 EPTB prevalence in 0.5%-5%
+   [PASS] 2022 VLBW prevalence in 0.3%-3%
+   [PASS] 2022 singletons > 90% of residents
+   [PASS] 2023 EPTB prevalence in 0.5%-5%
+   [PASS] 2023 VLBW prevalence in 0.3%-3%
+   [PASS] 2023 singletons > 90% of residents
+   [PASS] 2024 EPTB prevalence in 0.5%-5%
+   [PASS] 2024 VLBW prevalence in 0.3%-3%
+   [PASS] 2024 singletons > 90% of residents

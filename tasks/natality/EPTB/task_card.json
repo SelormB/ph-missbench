@@ -1,0 +1,96 @@
+{
+  "task": "EPTB",
+  "version": "1.0.0-draft",
+  "label": "Early preterm birth (<34 weeks, obstetric estimate)",
+  "source": "NCHS Natality Public Use Files",
+  "years": {
+    "train": [
+      2022,
+      2023
+    ],
+    "test": 2024
+  },
+  "cohort": [
+    "U.S. residents",
+    "plurality reported (not imputed)",
+    "singletons",
+    "OEGEST_COMB stated"
+  ],
+  "outcome_field": "OEGEST_COMB",
+  "predictors": [
+    "MAGER",
+    "MBSTATE_REC",
+    "MRACE6",
+    "MHISP_R",
+    "DMAR",
+    "MEDUC",
+    "FAGECOMB",
+    "FEDUC",
+    "PRIORLIVE",
+    "PRIORDEAD",
+    "PRIORTERM",
+    "ILLB_R",
+    "ILOP_R",
+    "ILP_R",
+    "PRECARE",
+    "WIC",
+    "CIG_0",
+    "CIG_1",
+    "M_HT_IN",
+    "BMI",
+    "PWGT_R",
+    "RF_PDIAB",
+    "RF_PHYPE",
+    "RF_PPTERM",
+    "RF_INFTR",
+    "RF_FEDRG",
+    "RF_ARTEC",
+    "RF_CESAR",
+    "RF_CESARN",
+    "IP_GON",
+    "IP_SYPH",
+    "IP_CHLAM",
+    "IP_HEPB",
+    "IP_HEPC",
+    "PAY_REC"
+  ],
+  "missingness_classes": {
+    "O": "observed",
+    "S": "not stated",
+    "A": "not applicable (structural)",
+    "I": "imputed by NCHS, restored to missing",
+    "X": "undocumented code, treated as missing"
+  },
+  "primary_metric": "AUPRC on test",
+  "secondary_metrics": [
+    "AUROC",
+    "Brier score",
+    "calibration slope",
+    "calibration intercept"
+  ],
+  "seed": 20261004,
+  "valid_fraction": 0.1,
+  "standard_train_n": 250000,
+  "splits": {
+    "train": {
+      "n": 6324305,
+      "cases": 136717,
+      "prevalence": 0.021617711353263323
+    },
+    "valid": {
+      "n": 703612,
+      "cases": 15396,
+      "prevalence": 0.02188137780481288
+    },
+    "test": {
+      "n": 3512264,
+      "cases": 75567,
+      "prevalence": 0.02151518223003738
+    },
+    "train_standard": {
+      "n": 250000,
+      "cases": 5404,
+      "prevalence": 0.021616
+    }
+  }
+}
