@@ -15,7 +15,21 @@ python paper/build_manuscript.py --final
 
 Commit `FREEZE.json` and tag it `tasks-frozen-v1.0` **before** running MAKD-Natality on any task. That commit's date is your evidence of independence.
 
-## 1. GitHub
+## 1. GitHub (from the git bundle)
+
+The repository already has its first commit and the `tasks-frozen-v1.0` tag. On your Mac:
+
+```bash
+cd ~/Documents
+git clone ph-missbench.bundle ph-missbench && cd ph-missbench
+# create an EMPTY public repo named ph-missbench at github.com/new, then:
+git remote set-url origin https://github.com/<you>/ph-missbench.git
+git push -u origin main --tags
+```
+
+Pushing the tag publishes the freeze date: your public evidence that the tasks were fixed before MAKD.
+
+## 1b. GitHub (manual alternative)
 
 1. Create an empty repository named `ph-missbench` at github.com/new (public, no README).
 2. In the project folder:
