@@ -222,7 +222,7 @@ The practical implication for public health analysts working with vital records 
 Users rebuild the tasks from the NCHS files with `run_all.sh` (about 900 MB of downloads); the raw records are not redistributed. Methods should tune only on the validation split, report test metrics once per configuration, and report both training tracks where feasible.
 
 ## Code and data availability
-The code (MIT License) and the task definitions, split manifests, missingness audit and baseline results (CC BY 4.0) will be released publicly on GitHub with an archived Zenodo DOI; until then they are available from the author. The task files were frozen and tagged (`tasks-frozen-v1.0`) on {frz.get('frozen_on', MISSING)}. The underlying records are the NCHS Natality Public Use Files, which are publicly available subject to NCHS data-use restrictions.
+The code (MIT License) and the task definitions, split manifests, missingness audit and baseline results (CC BY 4.0) are available at https://github.com/SelormB/ph-missbench. An archived release with a Zenodo DOI will follow. The task files were frozen and tagged (`tasks-frozen-v1.0`) on {frz.get('frozen_on', MISSING)}. The underlying records are the NCHS Natality Public Use Files, which are publicly available subject to NCHS data-use restrictions.
 
 ## Declarations
 **Funding.** This work received no specific grant from any funding agency.

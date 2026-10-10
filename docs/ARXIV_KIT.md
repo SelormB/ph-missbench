@@ -14,7 +14,7 @@ Missing-data methods are usually compared on complete datasets with values delet
 **Primary category:** stat.ML (Machine Learning, Statistics)
 **Cross-list:** stat.AP (Applications); optionally cs.LG
 **License:** CC BY 4.0
-**Comments:** 9 pages, 3 figures, 3 tables. Code and task definitions: https://github.com/<user>/ph-missbench ; archived release: <Zenodo DOI>
+**Comments:** 9 pages, 3 figures, 3 tables. Code and task definitions: https://github.com/SelormB/ph-missbench
 **Journal ref:** leave blank
 **MSC/ACM:** leave blank
 

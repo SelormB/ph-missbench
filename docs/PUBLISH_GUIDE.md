@@ -23,7 +23,7 @@ The repository already has its first commit and the `tasks-frozen-v1.0` tag. On 
 cd ~/Documents
 git clone ph-missbench.bundle ph-missbench && cd ph-missbench
 # create an EMPTY public repo named ph-missbench at github.com/new, then:
-git remote set-url origin https://github.com/<you>/ph-missbench.git
+git remote set-url origin https://github.com/SelormB/ph-missbench.git
 git push -u origin main --tags
 ```
 
@@ -36,7 +36,7 @@ Pushing the tag publishes the freeze date: your public evidence that the tasks w
    ```bash
    git init -b main && git add -A
    git commit -m "PH-MissBench v1.0.0: natality module"
-   git remote add origin https://github.com/<you>/ph-missbench.git
+   git remote add origin https://github.com/SelormB/ph-missbench.git
    git push -u origin main
    ```
    `.gitignore` already keeps the NCHS zips and every Parquet file out of the repository. The split manifest (`split_manifest.csv.gz`) is committed if it is under 100 MB; otherwise it goes to Zenodo only.

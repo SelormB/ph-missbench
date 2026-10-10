@@ -5,3 +5,7 @@ tasks/**/*.parquet
 __pycache__/
 .env
 *.token
+.DS_Store
+**/.DS_Store
+.Rhistory
+**/.Rhistory

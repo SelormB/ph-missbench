@@ -10,7 +10,7 @@ authors:
     orcid: "https://orcid.org/0009-0005-3991-4859"
     affiliation: "University of Northern Colorado"
 license: CC-BY-4.0
-repository-code: "https://github.com/[user]/ph-missbench"
+repository-code: "https://github.com/SelormB/ph-missbench"
 doi: "[10.5281/zenodo.pending]"
 keywords:
   - missing data

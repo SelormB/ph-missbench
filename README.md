@@ -1,4 +1,4 @@
-> **Status: DRAFT v1.0.0-draft (2026-10-04). Not verified by the author. Do not cite.**
+> **Status: v1.0.0-draft (2026-10-10).** Natality tasks frozen (`tasks-frozen-v1.0`); standard-track baselines complete; preprint in preparation. Repository: https://github.com/SelormB/ph-missbench
 
 # PH-MissBench
 
