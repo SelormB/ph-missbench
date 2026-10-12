@@ -9,3 +9,7 @@ __pycache__/
 **/.DS_Store
 .Rhistory
 **/.Rhistory
+paper/ieee/*.aux
+paper/ieee/*.log
+paper/ieee/*.out
+paper/ieee/*.blg

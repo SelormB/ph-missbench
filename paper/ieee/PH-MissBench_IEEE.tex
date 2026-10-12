@@ -1,0 +1,272 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+
+\begin{document}
+
+\title{PH-MissBench: rare-outcome prediction tasks with real, agency-documented missingness from U.S. birth records}
+
+\author{Selorm Buaka%
+\thanks{Selorm Buaka is a Ph.D. student in Applied Statistics and Research Methods, University of Northern Colorado, Greeley, CO, USA (e-mail: othnielbuaka@gmail.com; ORCID: 0009-0005-3991-4859).}%
+\thanks{This work received no specific grant from any funding agency.}}
+
+
+\maketitle
+
+\begin{abstract}
+Missing-data methods are usually compared on complete datasets with values deleted by simulation, which fixes the missingness mechanism by design. How methods behave on the missingness that public health analysts actually face is less well studied, particularly for rare outcomes. PH-MissBench is an open benchmark built from U.S. National Center for Health Statistics (NCHS) natality public-use files for 2022--2024. Every predictor cell carries the missingness class documented by NCHS (observed, not stated, structurally not applicable, or imputed by NCHS), and NCHS-imputed values are restored to missing. Two tasks predict early preterm birth (obstetric-estimate gestation under 34 weeks) and very low birthweight (under 1,500 g) among singleton births to U.S. residents from 35 pre-pregnancy and prenatal items, with training on 2022--2023 and testing on 2024. Task files were hashed and frozen before any baseline was run. Six baselines were evaluated by area under the precision-recall curve (AUPRC) with 1,000-replicate stratified bootstrap intervals. The cohort comprised 6,324,305 training, 703,612 validation and 3,512,264 test births; test-year prevalence was 2.15\% for early preterm birth and 1.06\% for very low birthweight. The pipeline reproduced NCHS published birth totals exactly for all three years. In 2024, 38.23\% of births had at least one predictor missing. Gradient boosting with native missing-value handling performed best (AUPRC 0.082 and 0.050); mean imputation with missing-value indicators (0.067, 0.038) outperformed chained-equations (0.063, 0.035) and iterative random-forest imputation (0.064, 0.036); complete-case analysis performed worst (0.061, 0.034) and was miscalibrated. On population-scale U.S. birth records, approaches that let the model see missingness outperformed imputation alone, consistent with informative missingness. PH-MissBench provides frozen, reproducible tasks for comparing missing-data methods on real public health data.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Missing data, Benchmark, Imputation, Natality, Preterm birth, Low birthweight, Public health surveillance.
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Missing data are routine in public health records, and the methods used to handle them change which predictions a model can make and for whom. Most comparisons of missing-data methods start from a complete dataset and delete values by a chosen mechanism (missing completely at random, at random, or not at random \cite{rubin1976}) \cite{jager2021,jarrett2022}. That design gives a ground truth for the deleted values, but it fixes the missingness mechanism by assumption; in real records the mechanism is unknown and often related to the outcome. Studies that instead use naturally occurring missingness in health databases have found that conclusions differ: gradient-boosted trees that handle missing values natively, and models given missing-value indicators, often predict as well as or better than models trained after imputation \cite{perezlebel2022,lemorvan2025}, consistent with theory showing that good prediction does not require good imputation \cite{josse2019}. Those studies drew on a small number of clinical cohorts and did not distinguish between the reasons a value is absent.
+
+U.S. vital statistics and survey files document why values are absent: an item may be not stated, structurally not applicable (a birth interval for a first birth), or filled in by the producing agency's own imputation. PH-MissBench uses that documentation to build prediction tasks on rare outcomes, where missing-data errors are costly because positives are few, and releases the agency-documented missingness class of every cell. Agency-imputed values are restored to missing, so that methods are not silently credited with the agency's imputation. This paper describes the first module, built from U.S. birth records, and reports baseline results.
+
+\section{Methods}
+
+\subsection{Data Source}
+
+The source is the NCHS Natality Public Use Files for data years 2022, 2023 and 2024, which contain one fixed-width record for every birth registered in the United States \cite{nchs2024guide}. Files are downloaded by the released scripts, which log file size and SHA-256 hash for each file. Record positions follow the NCHS user guide for each year and are validated automatically: a field fails if more than 0.1\% of its values fall outside the documented code set.
+
+\subsection{Analytic Cohort}
+
+Records were restricted to births to U.S. residents, to records whose plurality was reported rather than imputed by NCHS, and to singletons (Table~\ref{tab:cohort}). Records with the outcome not stated are excluded from that task and counted.
+
+\begin{table}[!t]
+\centering
+\footnotesize
+\caption{Cohort flow by data year}
+\label{tab:cohort}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Stage} & \textbf{2022} & \textbf{2023} & \textbf{2024} \\
+\midrule
+All records & 3,676,029 & 3,605,081 & 3,638,436 \\
+U.S. residents & 3,667,758 & 3,596,017 & 3,628,934 \\
+Plurality not imputed & 3,667,586 & 3,595,878 & 3,627,336 \\
+Singletons & 3,550,208 & 3,482,832 & 3,515,553 \\
+EPTB: outcome stated & 3,547,629 & 3,480,288 & 3,512,264 \\
+EPTB: cases & 76,705 & 75,408 & 75,567 \\
+VLBW: outcome stated & 3,547,547 & 3,480,218 & 3,512,859 \\
+VLBW: cases & 38,376 & 37,533 & 37,336 \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}\parbox{\columnwidth}{\scriptsize EPTB, early preterm birth; VLBW, very low birthweight. The singleton row is the analytic cohort.}
+\end{table}
+
+\subsection{Outcomes}
+
+Early preterm birth (primary task): obstetric estimate of gestation under 34 completed weeks. The obstetric estimate has been the NCHS standard measure since 2014 and is not imputed; the LMP-based combined gestation is not used because NCHS imputes some of its values. Very low birthweight (secondary task): birthweight under 1,500 g.
+
+\subsection{Predictors and Prediction Timepoint}
+
+The predictors are 35 pre-pregnancy and prenatal fields (Table~\ref{tab:predictors} in the Appendix): maternal and paternal demographics, reproductive history and inter-pregnancy intervals, month prenatal care began, WIC participation, cigarette smoking before pregnancy and in the first trimester, maternal height, pre-pregnancy weight and BMI, pre-existing diabetes and hypertension, previous preterm birth, infertility treatment, previous cesarean delivery, and maternal infections. The number of prenatal visits and all labor, delivery and infant items are excluded because they are recorded through or after delivery. Gestational hypertension, eclampsia, gestational diabetes, and second- and third-trimester smoking are also excluded: they are recorded at delivery without a diagnosis date, and missingness of third-trimester smoking is itself strongly associated with early delivery (in the 2024 cohort, early preterm prevalence was 52.02\% where it was missing versus 1.73\% where recorded).
+
+\subsection{Missingness Classes}
+
+Each predictor cell is assigned one class: observed; not stated (the agency's unknown code); not applicable (a structural code, for example birth intervals for a first birth or fertility-drug use when no infertility treatment was reported); imputed by NCHS (identified from the NCHS imputation flags for mother's age, race and marital status); or undocumented code (a value outside the documented code set, treated as missing). Not-stated, imputed and undocumented cells are missing in the task files. Structural not-applicable cells are encoded explicitly, as a category for categorical fields and as an indicator column for numeric fields, because they are known rather than missing. The class of every cell is released in companion files.
+
+\subsection{Splits}
+
+Births from 2022--2023 form the training years, with a seeded 10\% validation hold-out; births from 2024 form the test set, so that evaluation also reflects temporal drift. Splits are assigned once at the cohort level (seed 20261004), so both tasks share them. A standard track uses a seeded 250,000-record training subsample, so that computationally heavy methods can be compared; a full track uses all training records. Natality files are a census of registered births, so no sampling weights apply.
+
+\subsection{Baselines}
+
+All logistic-regression baselines standardize features and use L2 regularization (C = 1); categorical fields are one-hot encoded. For B1--B4, structural not-applicable numeric cells are set to zero with their indicator retained.
+
+\begin{itemize}
+\item
+  \textbf{B1, complete case.} Logistic regression trained only on training records with no missing predictor; at prediction time, missing cells are filled with training medians.
+\item
+  \textbf{B2, mean imputation with indicators.} Median fill plus one missing-value indicator per field, then logistic regression.
+\item
+  \textbf{B3, chained equations.} Single imputation by chained equations \cite{vanbuuren2011} (Bayesian ridge, 10 iterations), then logistic regression. This is single, not multiple, imputation.
+\item
+  \textbf{B4, iterative random forest.} Iterative imputation with a random-forest estimator in the style of missForest \cite{stekhoven2012} (20 trees, maximum depth 12, 5 iterations), then logistic regression. Standard track only.
+\item
+  \textbf{B5, gradient boosting.} LightGBM \cite{ke2017} with native missing-value handling (learning rate 0.03, 31 leaves, minimum 100 records per leaf, 0.8 row and column subsampling), early-stopped on validation AUPRC with patience 100.
+\item
+  \textbf{B6, gradient boosting with agency classes.} B5 plus two indicators per field marking not-stated and NCHS-imputed cells.
+\end{itemize}
+
+The B3 and B4 imputers are fit on a seeded 50,000-record subsample of the training data and then applied to all records. Hyperparameters are fixed defaults, not tuned.
+
+\subsection{Evaluation}
+
+The primary metric is AUPRC on the 2024 test set, which is more informative than the area under the ROC curve (AUROC) when positives are rare \cite{saito2015}. Secondary metrics are AUROC, the Brier score, the calibration slope, and calibration-in-the-large (the intercept with the model's logit as an offset) \cite{vancalster2019}. Uncertainty is summarized by 95\% percentile intervals from 1,000 stratified bootstrap replicates of the test set, resampling cases and non-cases separately. AUPRC is computed as average precision. The fast implementation used for the bootstrap is checked against scikit-learn on every run.
+
+\subsection{Freeze and Independence}
+
+After the cohort, predictors and splits were fixed, the task files, split manifest and record layout were hashed (SHA-256) and recorded in \texttt{FREEZE.json} on 2026-10-10, before any baseline or author-developed method was evaluated. The baseline code refuses to run if any task file differs from its frozen hash. Any later change to the tasks is released as a new benchmark version.
+
+\subsection{Software}
+
+Python 3.13.16, pandas 3.0.5, pyarrow 25.0.1, NumPy 2.5.3, scikit-learn 1.9.1 and LightGBM 4.7.0.
+
+\section{Results}
+
+\subsection{Cohort and Outcomes}
+
+The analytic cohort comprised 3,550,208, 3,482,832 and 3,515,553 singleton births in 2022, 2023 and 2024 (Table~\ref{tab:cohort}). For early preterm birth, the task contains 6,324,305 training, 703,612 validation and 3,512,264 test records (75,567 test cases; prevalence 2.15\%). For very low birthweight, the test set has 37,336 cases (prevalence 1.06\%).
+
+\subsection{External Validation}
+
+The pipeline's counts of births to U.S. residents were 3,667,758 (2022), 3,596,017 (2023) and 3,628,934 (2024), identical to the totals published by NCHS \cite{osterman2026}. Recomputed across all 2024 births, early preterm birth was 2.72\% and very low birthweight 1.33\%, matching the published 2.72\% and 1.33\%. All 55 extracted fields passed the layout check in every year. One 2024 record carried an undocumented blank in two birth-interval fields and was treated as missing.
+
+\subsection{Missingness}
+
+In the 2024 cohort, 38.23\% of births had at least one predictor missing, with a mean of 0.80 missing predictors per birth (Fig.~\ref{fig:missing}). The most frequently missing items were father's education (12.5\%), marital status (11.1\% not stated, a group that includes births to California residents, for whom NCHS withholds marital status, and 0.1\% imputed), the interval since the last pregnancy (10.1\%) and father's age (9.9\%). Mother's race was imputed by NCHS for 8.4\% of births; these values are missing in the benchmark.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{../figures/ieee/fig1.pdf}
+\caption{Share of the 2024 analytic cohort with each predictor missing, by reason. Items missing for under 0.5\% of births are omitted. Structural not-applicable cells are not counted as missing.}
+\label{fig:missing}
+\end{figure}
+
+Missingness was informative (Fig.~\ref{fig:informative}). Early preterm prevalence was 2.8 times higher among births with the maternal infection items missing than among births with them recorded, 2.6 times higher when the month prenatal care began was missing, and 2.2 times higher when pre-pregnancy BMI was missing. Marital status was the exception (ratio 0.9), consistent with its missingness being driven largely by California's statutory withholding rather than by the circumstances of the birth.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{../figures/ieee/fig2.pdf}
+\caption{Early preterm birth prevalence in the 2024 cohort among births with each predictor missing (orange) versus recorded (blue). Labels give the ratio. Items with at least 1,000 missing records are shown; log scale.}
+\label{fig:informative}
+\end{figure}
+
+\subsection{Baseline Results}
+
+Table~\ref{tab:baselines} and Fig.~\ref{fig:baselines} report test-set results on the standard track.
+
+\begin{table*}[!t]
+\centering
+\footnotesize
+\caption{Baseline results on the 2024 test year (standard track, 250,000 training births)}
+\label{tab:baselines}
+\begin{tabular}{llccrr}
+\toprule
+\textbf{Task} & \textbf{Model} & \textbf{AUPRC (95\% CI)} & \textbf{AUROC (95\% CI)} & \textbf{Slope} & \textbf{Intercept} \\
+\midrule
+EPTB & B1 & 0.061 (0.060--0.062) & 0.695 (0.693--0.697) & 0.91 & 0.13 \\
+EPTB & B2 & 0.067 (0.066--0.069) & 0.711 (0.709--0.713) & 0.94 & 0.00 \\
+EPTB & B3 & 0.063 (0.062--0.064) & 0.701 (0.699--0.703) & 0.94 & 0.00 \\
+EPTB & B4 & 0.064 (0.063--0.065) & 0.703 (0.701--0.705) & 0.94 & 0.00 \\
+EPTB & B5 & 0.082 (0.081--0.084) & 0.737 (0.735--0.739) & 1.01 & 0.00 \\
+EPTB & B6 & 0.083 (0.081--0.084) & 0.737 (0.735--0.739) & 1.01 & 0.00 \\
+VLBW & B1 & 0.034 (0.033--0.034) & 0.714 (0.711--0.717) & 0.93 & 0.11 \\
+VLBW & B2 & 0.038 (0.037--0.039) & 0.731 (0.729--0.734) & 0.96 & -0.02 \\
+VLBW & B3 & 0.035 (0.034--0.036) & 0.721 (0.719--0.724) & 0.96 & -0.02 \\
+VLBW & B4 & 0.036 (0.035--0.037) & 0.724 (0.722--0.727) & 0.96 & -0.02 \\
+VLBW & B5 & 0.050 (0.049--0.052) & 0.755 (0.753--0.758) & 0.96 & -0.01 \\
+VLBW & B6 & 0.050 (0.049--0.052) & 0.756 (0.753--0.758) & 1.00 & -0.01 \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}\parbox{\textwidth}{\scriptsize B1 complete-case logistic regression; B2 mean imputation with missing-value indicators; B3 chained-equations single imputation \cite{vanbuuren2011}; B4 iterative random-forest imputation \cite{stekhoven2012}; B5 LightGBM with native missing-value handling \cite{ke2017}; B6 B5 plus agency missingness-class indicators. Slope and intercept: calibration slope and calibration-in-the-large. Brier scores are in the released results file.}
+\end{table*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{../figures/ieee/fig3.pdf}
+\caption{AUPRC on the 2024 test year with 95\% bootstrap intervals (narrower than the markers at this sample size). Dashed line: outcome prevalence, the AUPRC of an uninformative model.}
+\label{fig:baselines}
+\end{figure*}
+
+Gradient boosting with native missing-value handling (B5) ranked first on both tasks, with AUPRC 0.082 for early preterm birth (3.8 times the prevalence) and 0.050 for very low birthweight (4.7 times). Mean imputation with missing-value indicators (B2) outperformed both iterative imputers on both tasks. Complete-case analysis (B1) ranked last; only 153,461 of 250,000 training births had every predictor recorded, and its predictions were systematically too low (calibration-in-the-large 0.13 and 0.11). Adding agency missingness classes to gradient boosting (B6) did not change discrimination. All other baselines were close to well calibrated (slopes 0.94--1.01).
+
+\section{Discussion}
+
+On population-scale U.S. birth records, methods that let the model see missingness (gradient boosting with native handling, and indicator columns) outperformed imputation without indicators, and complete-case analysis performed worst. This ordering replicates findings from clinical databases \cite{perezlebel2022} and theory on prediction with missing values \cite{lemorvan2025,josse2019}, here on several million births and with the agency's own record of why each value is missing. The audit points to the mechanism: for 20 of the 34 predictors with at least 1,000 missing records, births with the item missing had at least twice the early preterm prevalence of births with it recorded (median ratio 2.2), so missingness itself carries information that imputation alone discards. The near-identical performance of B5 and B6 suggests that, for gradient boosting, knowing that a value is missing matters more than knowing why. Whether the distinction between not-stated and agency-imputed values matters for other method families is a question the benchmark is designed to answer.
+
+The practical implication for public health analysts working with vital records is that dropping incomplete records is the worst default: it discarded 39\% of the training data here, lost discrimination, and biased the predicted risk. Imputation without missing-value indicators also lost information relative to simple indicator methods.
+
+\textit{Limitations.} There is no ground truth for the missing values, so the benchmark scores prediction rather than reconstruction. Missingness mechanisms are unknown; the classes record what NCHS documented, not whether data are missing at random. NCHS flags imputation for only a few items, so undocumented edits to other items cannot be reversed. Marital status for California births is withheld by statute and cannot be separated from ordinary non-response because the public files carry no geography. Pregnancy conditions are recorded without diagnosis dates, so the prediction timepoint rests on judgment, and the most clearly late-pregnancy items were excluded. Baselines use fixed default hyperparameters and only the standard training track; B3 is single rather than multiple imputation. Absolute performance is modest, as expected for prediction from pre-pregnancy and prenatal certificate items alone; the tasks are designed for comparing methods, not for clinical use.
+
+\textit{Future work.} Planned modules add survey data (YRBS, BRFSS, NHANES and NSDUH), which require design-aware splits and weighted metrics, along with full-track baselines, multiple imputation with pooling, and a separate late-pregnancy predictor tier.
+
+\section{Usage Notes}
+
+Users rebuild the tasks from the NCHS files with \texttt{run\_all.sh} (about 900 MB of downloads); the raw records are not redistributed. Methods should tune only on the validation split, report test metrics once per configuration, and report both training tracks where feasible.
+
+\section*{Code and Data Availability}
+
+The code (MIT License) and the task definitions, split manifests, missingness audit and baseline results (CC BY 4.0) are available at https://github.com/SelormB/ph-missbench. An archived release with a Zenodo DOI will follow. The task files were frozen and tagged (\texttt{tasks-frozen-v1.0}) on 2026-10-10. The underlying records are the NCHS Natality Public Use Files, which are publicly available subject to NCHS data-use restrictions.
+
+\section*{Ethics Statement}
+This study used only de-identified, publicly available data (NCHS Natality Public Use Files) and therefore does not meet the definition of human subjects research under 45 CFR 46.102. It was not submitted for institutional review board review. No attempt was made to identify any individual, in accordance with the NCHS data-use restrictions.
+
+\section*{Author Contributions}
+Selorm Buaka: Conceptualization; Methodology; Project administration.
+
+\section*{Use of AI Assistance}
+The author conceived the benchmark and made its design decisions (cohort, outcomes, prediction timepoint, predictor exclusions and split design). An AI assistant (Claude, Anthropic) wrote the pipeline code, ran the analyses, and drafted this manuscript, including its text, figures and tables. Every number in the manuscript is generated programmatically from the released pipeline outputs.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\appendices
+\section{Predictor Missingness}
+Table~\ref{tab:predictors} in the Appendix lists every predictor with the share of the 2024 analytic cohort in each missingness class.
+
+\begin{table*}[!t]
+\centering
+\scriptsize
+\caption{Predictors and their missingness in the 2024 analytic cohort, by class}
+\label{tab:predictors}
+\begin{tabular}{llrrr}
+\toprule
+\textbf{Field} & \textbf{Description} & \textbf{Not stated (\%)} & \textbf{NCHS-imputed (\%)} & \textbf{Not applicable (\%)} \\
+\midrule
+\texttt{MAGER} & Mother's age & 0.00 & 0.01 & 0.00 \\
+\texttt{MBSTATE\_REC} & Mother's nativity & 0.21 & 0.00 & 0.00 \\
+\texttt{MRACE6} & Mother's race & 0.00 & 8.43 & 0.00 \\
+\texttt{MHISP\_R} & Mother's Hispanic origin recode & 0.97 & 0.00 & 0.00 \\
+\texttt{DMAR} & Marital status & 11.11 & 0.10 & 0.00 \\
+\texttt{MEDUC} & Mother's education & 1.86 & 0.00 & 0.00 \\
+\texttt{FAGECOMB} & Father's age & 9.93 & 0.00 & 0.00 \\
+\texttt{FEDUC} & Father's education & 12.53 & 0.00 & 0.00 \\
+\texttt{PRIORLIVE} & Prior births now living & 0.23 & 0.00 & 0.00 \\
+\texttt{PRIORDEAD} & Prior births now dead & 0.35 & 0.00 & 0.00 \\
+\texttt{PRIORTERM} & Prior other pregnancy outcomes & 0.43 & 0.00 & 0.00 \\
+\texttt{ILLB\_R} & Months since last live birth & 2.38 & 0.00 & 40.38 \\
+\texttt{ILOP\_R} & Months since last other pregnancy outcome & 8.52 & 0.00 & 71.68 \\
+\texttt{ILP\_R} & Months since last pregnancy & 10.09 & 0.00 & 32.73 \\
+\texttt{PRECARE} & Month prenatal care began & 1.89 & 0.00 & 0.00 \\
+\texttt{WIC} & WIC during pregnancy & 1.17 & 0.00 & 0.00 \\
+\texttt{CIG\_0} & Cigarettes/day 3 months before pregnancy & 0.46 & 0.00 & 0.00 \\
+\texttt{CIG\_1} & Cigarettes/day 1st trimester & 0.45 & 0.00 & 0.00 \\
+\texttt{M\_HT\_IN} & Mother's height & 0.61 & 0.00 & 0.00 \\
+\texttt{BMI} & Pre-pregnancy BMI & 2.40 & 0.00 & 0.00 \\
+\texttt{PWGT\_R} & Pre-pregnancy weight & 2.09 & 0.00 & 0.00 \\
+\texttt{RF\_PDIAB} & Pre-pregnancy diabetes & 0.17 & 0.00 & 0.00 \\
+\texttt{RF\_PHYPE} & Pre-pregnancy hypertension & 0.17 & 0.00 & 0.00 \\
+\texttt{RF\_PPTERM} & Previous preterm birth & 0.17 & 0.00 & 0.00 \\
+\texttt{RF\_INFTR} & Infertility treatment used & 0.17 & 0.00 & 0.00 \\
+\texttt{RF\_FEDRG} & Fertility-enhancing drugs & 0.23 & 0.00 & 97.51 \\
+\texttt{RF\_ARTEC} & Assisted reproductive technology & 0.23 & 0.00 & 97.51 \\
+\texttt{RF\_CESAR} & Previous cesarean & 0.17 & 0.00 & 0.00 \\
+\texttt{RF\_CESARN} & Number of previous cesareans & 0.18 & 0.00 & 0.00 \\
+\texttt{IP\_GON} & Gonorrhea & 0.39 & 0.00 & 0.00 \\
+\texttt{IP\_SYPH} & Syphilis & 0.39 & 0.00 & 0.00 \\
+\texttt{IP\_CHLAM} & Chlamydia & 0.39 & 0.00 & 0.00 \\
+\texttt{IP\_HEPB} & Hepatitis B & 0.39 & 0.00 & 0.00 \\
+\texttt{IP\_HEPC} & Hepatitis C & 0.39 & 0.00 & 0.00 \\
+\texttt{PAY\_REC} & Payment source recode & 0.82 & 0.00 & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\end{document}

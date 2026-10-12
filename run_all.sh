@@ -9,3 +9,5 @@ python code/03b_validate.py      # checks totals against NCHS published values
 python code/04_tasks.py          # add --freeze only after the author's verification
 # after freezing and running 05_baselines.py:
 # python code/06_figures.py && python paper/build_manuscript.py
+# IEEE two-column preprint (needs TeX Live with IEEEtran):
+# python code/06_figures.py --final --ieee && python paper/build_ieee.py
